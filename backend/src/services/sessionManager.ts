@@ -1,5 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
-import { Client, ClientChannel } from 'ssh2';
+import ssh2 from 'ssh2';
+import type { Client, ClientChannel } from 'ssh2';
 import { Session } from '../types/index.js';
 
 class SessionManager {

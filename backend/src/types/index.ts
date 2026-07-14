@@ -1,4 +1,4 @@
-import { Client, ClientChannel } from 'ssh2';
+import type { Client, ClientChannel } from 'ssh2';
 
 export interface SSHCredentials {
   username: string;

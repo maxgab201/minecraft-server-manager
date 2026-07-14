@@ -1,4 +1,6 @@
-import { utils, ParsedKey } from 'ssh2';
+import ssh2 from 'ssh2';
+const { utils } = ssh2;
+type ParsedKey = ssh2.ParsedKey;
 
 export function parseKey(keyString: string): ParsedKey {
   if (!keyString || typeof keyString !== 'string') {

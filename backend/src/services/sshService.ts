@@ -1,4 +1,4 @@
-import { Client, ClientChannel } from 'ssh2';
+import ssh2 from 'ssh2';
 import { SSHCredentials, Session } from '../types/index.js';
 import { sessionManager } from './sessionManager.js';
 import { parseKey } from '../utils/ssh-key-parser.js';
@@ -15,12 +15,12 @@ class SSHService {
     const parsedKey = parseKey(privateKey);
 
     return new Promise((resolve, reject) => {
-      const client = new Client();
+      const client = new ssh2.Client();
 
       client.on('ready', () => {
         client.shell(
           { term: 'xterm-256color', cols: 80, rows: 24 },
-          (err: Error | undefined, stream: ClientChannel) => {
+          (err: Error | undefined, stream: ssh2.ClientChannel) => {
             if (err) {
               client.end();
               reject(new Error(`Failed to create shell: ${err.message}`));
