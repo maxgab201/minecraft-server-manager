@@ -3,28 +3,25 @@ import { motion } from 'framer-motion'
 import { Zap } from 'lucide-react'
 import { SHORTCUT_DEFINITIONS } from '../../../../shared/constants/commands'
 import type { ShortcutAction } from '../../../../shared/types/shortcuts'
-import { useAuthStore } from '../../stores/authStore'
 import { executeShortcut } from '../../services/api'
 import { ShortcutButton } from './ShortcutButton'
 import { useToast } from '../ui/Toast'
 
 export function QuickActions() {
-  const { sessionId } = useAuthStore()
   const { toast } = useToast()
   const [loading, setLoading] = useState<ShortcutAction | null>(null)
 
   const handleAction = useCallback(async (id: ShortcutAction, label: string) => {
-    if (!sessionId) return
     setLoading(id)
     try {
-      await executeShortcut(sessionId, id)
+      await executeShortcut(id)
       toast({ type: 'success', message: `${label} executed successfully` })
     } catch {
       toast({ type: 'error', message: `Failed to execute ${label}` })
     } finally {
       setLoading(null)
     }
-  }, [sessionId, toast])
+  }, [toast])
 
   return (
     <motion.div

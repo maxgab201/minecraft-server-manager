@@ -16,9 +16,19 @@ export class WebSocketService {
     this.intentionalClose = false
     const match = document.cookie.match(/(?:^|;\s*)token=([^;]*)/)
     const token = match ? match[1] : ''
-    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:'
-    const host = window.location.host
-    this.url = `${protocol}//${host}/ws/terminal?token=${token}&sessionId=${sessionId}`
+
+    const apiUrl = import.meta.env.VITE_API_URL || ''
+    let wsBase: string
+    if (apiUrl) {
+      const url = new URL(apiUrl)
+      wsBase = `${url.protocol === 'https:' ? 'wss:' : 'ws:'}//${url.host}`
+    } else {
+      const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:'
+      const host = window.location.host
+      wsBase = `${protocol}//${host}`
+    }
+
+    this.url = `${wsBase}/ws/terminal?token=${token}&sessionId=${sessionId}`
     this.createConnection()
   }
 

@@ -17,7 +17,7 @@ interface AuthState {
   reset: () => void
 }
 
-export const useAuthStore = create<AuthState>((set, get) => ({
+export const useAuthStore = create<AuthState>((set) => ({
   sessionId: null,
   isConnected: false,
   username: '',
@@ -54,13 +54,10 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   },
 
   disconnect: async () => {
-    const { sessionId } = get()
-    if (sessionId) {
-      try {
-        await disconnectSSH(sessionId)
-      } catch {
-        // Ignore disconnect errors
-      }
+    try {
+      await disconnectSSH()
+    } catch {
+      // Ignore disconnect errors
     }
     set({
       sessionId: null,

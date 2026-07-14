@@ -8,7 +8,7 @@ interface StatusState {
   pollingInterval: ReturnType<typeof setInterval> | null
   error: string | null
 
-  startPolling: (sessionId: string) => void
+  startPolling: () => void
   stopPolling: () => void
   updateStatus: (status: ServerStatus) => void
 }
@@ -19,13 +19,13 @@ export const useStatusStore = create<StatusState>((set, get) => ({
   pollingInterval: null,
   error: null,
 
-  startPolling: (sessionId: string) => {
+  startPolling: () => {
     const { pollingInterval } = get()
     if (pollingInterval) clearInterval(pollingInterval)
 
     const fetchStatus = async () => {
       try {
-        const status = await getServerStatus(sessionId)
+        const status = await getServerStatus()
         set({ serverStatus: status, error: null })
       } catch {
         // Silently fail to avoid flooding logs

@@ -10,7 +10,6 @@ export function useLogs() {
   const lastOffsetRef = useRef(0)
 
   const fetchLogs = useCallback(async (reset = false) => {
-    if (!sessionId) return
     try {
       const params: Record<string, string | number> = {}
       if (filter !== 'ALL') params.level = filter.toLowerCase()
@@ -18,7 +17,7 @@ export function useLogs() {
       params.limit = 200
       if (!reset) params.offset = lastOffsetRef.current
 
-      const response = await getLogs(sessionId, params)
+      const response = await getLogs(params)
       if (response.entries?.length > 0) {
         if (reset) {
           setLogs(response.entries)
@@ -34,7 +33,7 @@ export function useLogs() {
   }, [sessionId, filter, searchQuery, setLogs, addLogs])
 
   useEffect(() => {
-    if (isConnected && sessionId) {
+    if (isConnected) {
       fetchLogs(true)
       pollRef.current = setInterval(() => fetchLogs(false), 3000)
     }
@@ -46,7 +45,7 @@ export function useLogs() {
       }
       lastOffsetRef.current = 0
     }
-  }, [isConnected, sessionId, fetchLogs])
+  }, [isConnected, fetchLogs])
 
   useEffect(() => {
     if (isConnected) {
@@ -55,9 +54,8 @@ export function useLogs() {
   }, [filter, searchQuery, isConnected, fetchLogs])
 
   const handleDownload = useCallback(async () => {
-    if (!sessionId) return
     try {
-      const blob = await downloadLogs(sessionId)
+      const blob = await downloadLogs()
       const url = URL.createObjectURL(blob)
       const a = document.createElement('a')
       a.href = url
@@ -67,7 +65,7 @@ export function useLogs() {
     } catch {
       // Handle download error silently
     }
-  }, [sessionId])
+  }, [])
 
   return {
     logs,

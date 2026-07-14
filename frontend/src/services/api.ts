@@ -38,43 +38,51 @@ export async function connectSSH(credentials: {
   privateKey: string
   passphrase?: string
 }): Promise<{ sessionId: string; username: string; host: string; port: number; serverDir: string }> {
-  const { data } = await api.post('/ssh/connect', credentials)
-  return data
+  const { data } = await api.post('/auth/connect', credentials)
+  document.cookie = `token=${data.token}; path=/; max-age=900; SameSite=Strict; Secure`
+  return data.connection
 }
 
-export async function disconnectSSH(sessionId: string): Promise<void> {
-  await api.post('/ssh/disconnect', { sessionId })
+export async function disconnectSSH(): Promise<void> {
+  await api.post('/auth/disconnect')
+  document.cookie = 'token=; path=/; max-age=0'
 }
 
-export async function getServerStatus(sessionId: string) {
-  const { data } = await api.get(`/server/status?sessionId=${sessionId}`)
+export async function getServerStatus() {
+  const { data } = await api.get('/status')
   return data
 }
 
 export async function getShortcuts() {
-  const { data } = await api.get('/server/shortcuts')
+  const { data } = await api.get('/shortcuts')
   return data
 }
 
-export async function executeShortcut(sessionId: string, action: string) {
-  const { data } = await api.post('/server/execute', { sessionId, action })
+export async function executeShortcut(action: string) {
+  const { data } = await api.post('/shortcuts/execute', { action })
   return data
 }
 
 export async function getLogs(
-  sessionId: string,
   params?: { level?: string; search?: string; limit?: number; offset?: number }
 ) {
-  const { data } = await api.get('/server/logs', {
-    params: { sessionId, ...params },
+  const { data } = await api.get('/logs', { params })
+  return data
+}
+
+export async function searchLogs(query: string) {
+  const { data } = await api.get('/logs/search', { params: { q: query } })
+  return data
+}
+
+export async function downloadLogs(): Promise<Blob> {
+  const { data } = await api.get('/logs/download', {
+    responseType: 'blob',
   })
   return data
 }
 
-export async function downloadLogs(sessionId: string): Promise<Blob> {
-  const { data } = await api.get('/server/logs/download', {
-    params: { sessionId },
-    responseType: 'blob',
-  })
+export async function getSessionStatus() {
+  const { data } = await api.get('/auth/status')
   return data
 }

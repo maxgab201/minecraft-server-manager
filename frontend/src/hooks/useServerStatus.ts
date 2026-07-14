@@ -3,12 +3,12 @@ import { useStatusStore } from '../stores/statusStore'
 import { useAuthStore } from '../stores/authStore'
 
 export function useServerStatus() {
-  const { sessionId, isConnected } = useAuthStore()
+  const { isConnected } = useAuthStore()
   const { serverStatus, polling, startPolling, stopPolling } = useStatusStore()
 
   useEffect(() => {
-    if (isConnected && sessionId) {
-      startPolling(sessionId)
+    if (isConnected) {
+      startPolling()
     } else {
       stopPolling()
     }
@@ -16,7 +16,7 @@ export function useServerStatus() {
     return () => {
       stopPolling()
     }
-  }, [isConnected, sessionId, startPolling, stopPolling])
+  }, [isConnected, startPolling, stopPolling])
 
   return {
     serverStatus,
