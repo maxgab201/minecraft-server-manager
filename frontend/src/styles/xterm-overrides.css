@@ -1,0 +1,105 @@
+.xterm {
+  padding: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.xterm .xterm-viewport {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.08) transparent;
+}
+
+.xterm .xterm-viewport::-webkit-scrollbar {
+  width: 6px;
+}
+
+.xterm .xterm-viewport::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.xterm .xterm-viewport::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.08);
+  border-radius: 3px;
+}
+
+.xterm .xterm-viewport::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0.16);
+}
+
+.xterm .xterm-screen {
+  z-index: 0;
+}
+
+.xterm .xterm-cursor-layer {
+  z-index: 1;
+}
+
+.xterm .xterm-selection-layer {
+  z-index: 0;
+}
+
+.xterm .xterm-link-layer {
+  z-index: 2;
+}
+
+.xterm .xterm-selection {
+  border-radius: 2px;
+}
+
+.xterm .xterm-cursor {
+  transition: opacity 0.1s ease;
+}
+
+.xterm .xterm-cursor-block {
+  mix-blend-mode: difference;
+}
+
+.xterm .xterm-rows {
+  font-variant-ligatures: none;
+  letter-spacing: 0;
+}
+
+.xterm-rows span {
+  font-family: 'JetBrains Mono', 'Fira Code', monospace !important;
+}
+
+.xterm-rows .xterm-fg-2 {
+  color: #00d4aa !important;
+}
+
+.xterm-rows .xterm-fg-1 {
+  color: #ef4444 !important;
+}
+
+.xterm-rows .xterm-fg-3 {
+  color: #f59e0b !important;
+}
+
+.xterm-rows .xterm-fg-4 {
+  color: #6366f1 !important;
+}
+
+.xterm-rows .xterm-fg-5 {
+  color: #a78bfa !important;
+}
+
+.xterm-rows .xterm-fg-6 {
+  color: #22d3ee !important;
+}
+
+.xterm-rows .xterm-bg-0 {
+  background-color: transparent !important;
+}
+
+.xterm .xterm-helper-textarea {
+  opacity: 0 !important;
+}
+
+.xterm .xterm-cursor-underline {
+  height: 2px !important;
+  margin-top: 14px;
+}
+
+.xterm .xterm-cursor-bar {
+  width: 2px !important;
+}

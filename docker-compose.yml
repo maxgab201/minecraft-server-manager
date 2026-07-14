@@ -1,0 +1,29 @@
+version: "3.8"
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    ports:
+      - "3001:3001"
+    environment:
+      - PORT=3001
+      - JWT_SECRET=${JWT_SECRET:-change-this-secret-in-production}
+      - JWT_EXPIRY=15m
+      - SERVER_DIR=/opt/minecraft/server
+      - MAX_SESSION_IDLE=1800000
+      - RATE_LIMIT_WINDOW=900000
+      - RATE_LIMIT_MAX=100
+      - CORS_ORIGIN=${CORS_ORIGIN:-http://localhost:80}
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
